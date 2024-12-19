@@ -30,9 +30,9 @@ CURRENT_HOME_PATH = os.path.dirname(CURRENT_DIR_PATH)
 
 # 設定
 image_size = (224, 224)
-batch_size = 32
+batch_size = 16
 epochs = 50#50 better
-target_val_accuracy = 0.95  # 設定目標驗證準確度 better
+target_val_accuracy = 0.935  # 設定目標驗證準確度 better
 
 # 讀取 name.txt 和 query.txt
 with open(CURRENT_HOME_PATH + f"/name.txt", "r") as f:
@@ -98,8 +98,8 @@ feature_model = tf.keras.applications.ResNet152(
     input_shape=input_shape,
 )
 global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
-dense_layer0 = tf.keras.layers.Dense(512,activation='relu') #better
-dense_layer1 = tf.keras.layers.Dense(256,activation='relu') #better
+dense_layer0 = tf.keras.layers.Dense(1024,activation='relu') #better
+dense_layer1 = tf.keras.layers.Dense(512,activation='relu') #better
 dense_layer2 = tf.keras.layers.Dense(len(label_map), activation="softmax") #better
 
 model = models.Sequential([

@@ -1,1 +1,2 @@
+epoch 16 times
 95.2%
