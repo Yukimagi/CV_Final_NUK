@@ -17,6 +17,7 @@ conda install pandas
 
 conda install pillow
 '''
+
 import os
 import tensorflow as tf
 from tensorflow import keras
@@ -33,7 +34,7 @@ print(CURRENT_HOME_PATH)
 image_size = (224, 224)
 batch_size = 32
 epochs = 100#50 better
-target_val_accuracy = 0.85  # 設定目標驗證準確度 better
+target_val_accuracy = 0.83  # 設定目標驗證準確度 better
 
 # 讀取 name.txt 和 query.txt
 with open(CURRENT_HOME_PATH + f"/name.txt", "r") as f:
@@ -93,25 +94,23 @@ test_ds = (
 
 # 模型架構
 input_shape = (image_size[0], image_size[1], 3)
-
-feature_model = tf.keras.applications.VGG16(
-    include_top=False,  # 是否包含全連階層
-    weights='imagenet',  # 是否載入imagenet氣量
-    input_shape=input_shape,  # 輸入纖度
+feature_model = tf.keras.applications.VGG19(
+    include_top=False,
+    weights="imagenet",
+    input_shape=input_shape,
 )
-
 feature_model.trainable = False
 
 model = models.Sequential([
     feature_model,
     layers.Flatten(),
-    layers.Dense(4096, activation='relu'),
-    layers.Dense(4096, activation='relu'),
+    layers.Dense(4096, activation="relu"),
+    layers.Dense(4096, activation="relu"),
     layers.Dense(2048, activation='relu'),
     layers.Dense(2048, activation='relu'),
     layers.Dense(1024, activation='relu'),
     layers.Dense(1024, activation='relu'),
-    layers.Dense(len(label_map), activation='softmax'),
+    layers.Dense(len(label_map), activation="softmax"),
 ])
 
 # 模型編輯
