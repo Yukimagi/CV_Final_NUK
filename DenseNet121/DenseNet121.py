@@ -90,6 +90,7 @@ test_ds = (
 )
 
 # 模型架構
+
 input_shape = (image_size[0], image_size[1], 3)
 feature_model = tf.keras.applications.DenseNet121(
     include_top=False,
