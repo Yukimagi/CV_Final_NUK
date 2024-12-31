@@ -31,7 +31,8 @@ CURRENT_HOME_PATH = os.path.dirname(CURRENT_DIR_PATH)
 # 設定
 image_size = (224, 224)
 batch_size = 16
-epochs = 10
+epochs = 50#50 better
+target_val_accuracy = 0.938  # 設定目標驗證準確度 better
 
 # 讀取 name.txt 和 query.txt
 with open(CURRENT_HOME_PATH + f"/name.txt", "r") as f:
@@ -116,8 +117,22 @@ model.compile(
     metrics=["accuracy"],
 )
 
-# 模型訓練
-history = model.fit(train_ds, epochs=epochs, validation_data=test_ds)
+# 自定義 Callback better
+class StopTrainingOnAccuracy(tf.keras.callbacks.Callback):
+    def __init__(self, target_accuracy):
+        super().__init__()
+        self.target_accuracy = target_accuracy
+
+    def on_epoch_end(self, epoch, logs=None):
+        val_acc = logs.get("val_accuracy")
+        if val_acc is not None and val_acc >= self.target_accuracy:
+            print(f"\n驗證準確度達到 {val_acc:.2f}，訓練停止。")
+            self.model.stop_training = True
+
+
+# 模型訓練 better 加入暫停
+callbacks = [StopTrainingOnAccuracy(target_accuracy=target_val_accuracy)]
+history = model.fit(train_ds, epochs=epochs, validation_data=test_ds, callbacks=callbacks)
 
 # 儲存模型
 model.save(filepath=CURRENT_DIR_PATH + f"/model/", overwrite=True, save_format="tf")
