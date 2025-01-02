@@ -1,7 +1,6 @@
 import os
 import pandas as pd
-from sklearn.svm import SVC
-from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 
@@ -28,10 +27,6 @@ for idx, line in enumerate(name_lines):
 # 分割成測試集和訓練集
 query_set = {all_data[i - 1] for i in query_indices}  # 減1以配對行數
 train_set = set(all_data) - query_set
-
-# 建立資料路徑
-base_path = CURRENT_HOME_PATH + f"/pic01/pic"
-
 # 建立 DataFrame
 def create_dataframe(data_set):
     data = {
@@ -55,12 +50,12 @@ label_encoder = LabelEncoder()
 y_train_encoded = label_encoder.fit_transform(y_train)
 y_test_encoded = label_encoder.transform(y_test)
 
-# 初始化 SVM 模型並訓練
-svm_model = SVC(kernel='linear')  # 你也可以選擇其他 kernel，如 'rbf'
-svm_model.fit(X_train, y_train_encoded)
+# 初始化 KNN 模型並訓練
+knn_model = KNeighborsClassifier(n_neighbors=5)  # 你可以更改 k 的值，例如 3 或 7
+knn_model.fit(X_train, y_train_encoded)
 
 # 使用訓練好的模型進行預測
-y_pred = svm_model.predict(X_test)
+y_pred = knn_model.predict(X_test)
 
 # 計算準確度
 accuracy = accuracy_score(y_test_encoded, y_pred)
