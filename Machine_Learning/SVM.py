@@ -53,7 +53,7 @@ y_train_encoded = label_encoder.fit_transform(y_train)
 y_test_encoded = label_encoder.transform(y_test)
 
 # 初始化 SVM 模型並訓練
-svm_model = SVC(kernel='linear')  # 你也可以選擇其他 kernel，如 'rbf'
+svm_model = SVC(kernel='rbf')  # 你也可以選擇其他 kernel，如 'rbf'
 svm_model.fit(X_train, y_train_encoded)
 
 # 使用訓練好的模型進行預測
